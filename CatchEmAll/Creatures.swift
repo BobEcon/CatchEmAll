@@ -7,13 +7,22 @@
 
 import Foundation
 
-@Observable // Will watch objects for any chnages so that SwiftUI will redraw the interface when needed
+@Observable // Will watch objects for any changes so that SwiftUI will redraw the interface when needed
 class Creatures {
     private struct Returned: Codable {
         var count: Int
         var next: String //TODO: We want to change this to an optional
+        var results: [Result]
     }
-    var urlString = "https://pokeapi.co/api/v2/pokemon/"
+    
+    struct Result: Codable, Hashable {
+        var name: String
+        var url: String // url for detail on Pokemon
+    }
+    
+    var urlString = "https://pokeapi.co/api/v2/pokemon"
+    var count = 0
+    var creaturesArray: [Result] = []
     
     func getData() async {
         print("🕸️ We are accessing the url \(urlString)")
@@ -32,7 +41,9 @@ class Creatures {
                 print("😡 JSON ERROR: Could not decode returned JSON data")
                 return
             }
-            print("😎 JSON returned! count: \(returned.count), next: \(returned.next)")
+            self.count = returned.count
+            self.urlString = returned.next
+            self.creaturesArray = returned.results
         } catch {
             print("😡 ERROR: Could not get data from \(urlString)")
         }
