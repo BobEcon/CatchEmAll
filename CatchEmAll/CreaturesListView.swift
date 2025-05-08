@@ -16,7 +16,7 @@ struct CreaturesListView: View {
                 NavigationLink {
                     DetailView(creature: creature)
                 } label: {
-                    Text(creature.name)
+                    Text(creature.name.capitalized)
                         .font(.title2)
                 }
 

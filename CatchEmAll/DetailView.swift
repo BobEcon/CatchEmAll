@@ -9,10 +9,11 @@ import SwiftUI
 
 struct DetailView: View {
     let creature: Creature
+    @State private var creatureDetail = CreatureDetail()
     
     var body: some View {
         VStack(alignment:.leading, spacing: 3) {
-        Text(creature.name)
+            Text(creature.name.capitalized)
              .font(Font.custom("Avenir Next Condensed", size: 60))
              .bold()
              .minimumScaleFactor(0.5)
@@ -37,14 +38,14 @@ struct DetailView: View {
                     }
                     .padding(.trailing)
                 
-                VStack {
+                VStack(alignment:.leading) {
                     HStack(alignment:.top) {
                         Text("Height:")
                             .font(.title2)
                             .bold()
                             .foregroundStyle(.red)
                         
-                        Text("999.9")
+                        Text(String(format: "%.1f", creatureDetail.height))
                             .font(.largeTitle)
                             .bold()
                     }
@@ -55,7 +56,7 @@ struct DetailView: View {
                             .bold()
                             .foregroundStyle(.red)
                         
-                        Text("999.9")
+                        Text(String(format: "%.1f", creatureDetail.weight))
                             .font(.largeTitle)
                             .bold()
                     }
@@ -66,6 +67,10 @@ struct DetailView: View {
             
         }
         .padding()
+        .task {
+            creatureDetail.urlString = creature.url
+            await creatureDetail.getData()
+        }
     }
 }
 
