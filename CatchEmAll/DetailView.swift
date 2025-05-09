@@ -14,29 +14,34 @@ struct DetailView: View {
     var body: some View {
         VStack(alignment:.leading, spacing: 3) {
             Text(creature.name.capitalized)
-             .font(Font.custom("Avenir Next Condensed", size: 60))
-             .bold()
-             .minimumScaleFactor(0.5)
-             .lineLimit(1)
-         
+                .font(Font.custom("Avenir Next Condensed", size: 60))
+                .bold()
+                .minimumScaleFactor(0.5)
+                .lineLimit(1)
+            
             Rectangle()
                 .frame(height: 1)
                 .foregroundStyle(.gray)
                 .padding(.bottom)
-           
+            
             HStack {
-                Image(systemName: "figure.run.circle")
-                    .resizable()
-                    .scaledToFit()
-                    .background(.white)
-                    .frame(width: 96, height: 96)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
-                    .shadow(radius: 8, x: 5, y: 5)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 16)
-                            .stroke(.gray.opacity(0.5), lineWidth: 1)
-                    }
-                    .padding(.trailing)
+                AsyncImage(url: URL(string: creatureDetail.imageURL)) { image in
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .background(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        .shadow(radius: 8, x: 5, y: 5)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(.gray.opacity(0.5), lineWidth: 1)
+                        }
+                } placeholder: {
+                   RoundedRectangle(cornerRadius: 10)
+                        .foregroundStyle(.clear)
+                }
+                .frame(width: 96, height: 96)
+                .padding(.trailing)
                 
                 VStack(alignment:.leading) {
                     HStack(alignment:.top) {
@@ -63,7 +68,7 @@ struct DetailView: View {
                 }
             }
             
-         Spacer()
+            Spacer()
             
         }
         .padding()

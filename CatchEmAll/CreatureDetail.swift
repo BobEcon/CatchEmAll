@@ -20,8 +20,8 @@ class CreatureDetail {
     }
     
     var urlString: String = "" // Update with string passed in from creature clicked on
-    var height: Double = 0.0
-    var weight: Double = 0.0
+    var height = 0.0
+    var weight = 0.0
     var imageURL = ""
     
     func getData() async {
