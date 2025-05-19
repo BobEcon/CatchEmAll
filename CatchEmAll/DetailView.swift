@@ -25,23 +25,57 @@ struct DetailView: View {
                 .padding(.bottom)
             
             HStack {
-                AsyncImage(url: URL(string: creatureDetail.imageURL)) { image in
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .background(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                        .shadow(radius: 8, x: 5, y: 5)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 16)
-                                .stroke(.gray.opacity(0.5), lineWidth: 1)
-                        }
-                } placeholder: {
-                   RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(.clear)
+                AsyncImage(url: URL(string: creatureDetail.imageURL)) { phase in
+                    if let image = phase.image { // We have a valid image
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .background(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .shadow(radius: 8, x: 5, y: 5)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(.gray.opacity(0.5), lineWidth: 1)
+                            }
+                    } else if phase.error != nil { // We've had an error
+                        Image(systemName: "questionmark.square.dashed")
+                            .resizable()
+                            .scaledToFit()
+                            .background(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .shadow(radius: 8, x: 5, y: 5)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(.gray.opacity(0.5), lineWidth: 1)
+                            }
+                    } else { // use a placeholder - image loading
+//                        RoundedRectangle(cornerRadius: 10)
+//                            .foregroundStyle(.clear)
+                        ProgressView()
+                            .tint(.red)
+                            .scaleEffect(4)
+                    }
                 }
                 .frame(width: 96, height: 96)
                 .padding(.trailing)
+                
+//                AsyncImage(url: URL(string: creatureDetail.imageURL)) { image in
+//                    image
+//                        .resizable()
+//                        .scaledToFit()
+//                        .background(.white)
+//                        .clipShape(RoundedRectangle(cornerRadius: 16))
+//                        .shadow(radius: 8, x: 5, y: 5)
+//                        .overlay {
+//                            RoundedRectangle(cornerRadius: 16)
+//                                .stroke(.gray.opacity(0.5), lineWidth: 1)
+//                        }
+//                } placeholder: {
+//                   RoundedRectangle(cornerRadius: 10)
+//                        .foregroundStyle(.clear)
+//                }
+//                .frame(width: 96, height: 96)
+//                .padding(.trailing)
                 
                 VStack(alignment:.leading) {
                     HStack(alignment:.top) {

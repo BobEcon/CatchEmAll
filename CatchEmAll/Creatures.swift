@@ -11,7 +11,7 @@ import Foundation
 class Creatures {
     private struct Returned: Codable {
         var count: Int
-        var next: String? //TODO: We want to change this to an optional
+        var next: String? //TODO: We want to change this to an optional (we did!)
         var results: [Creature]
     }
     
