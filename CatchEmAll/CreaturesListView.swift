@@ -9,11 +9,12 @@ import SwiftUI
 
 struct CreaturesListView: View {
     @State var creatures = Creatures()
+    @State private var searchText = ""
     
     var body: some View {
         NavigationStack {
             ZStack {
-                List(creatures.creaturesArray) { creature in
+                List(searchResults) { creature in
                     LazyVStack {
                         NavigationLink {
                             DetailView(creature: creature)
@@ -23,10 +24,7 @@ struct CreaturesListView: View {
                         }
                     }
                     .task {
-                        guard let lastCreature = creatures.creaturesArray.last else { return }
-                        if creature.name == lastCreature.name && creatures.urlString.hasPrefix("http") {
-                            await creatures.getData()
-                        }
+                        await creatures.loadNextIfNeeded(creature: creature)
                     }
                     
                 }
@@ -44,7 +42,7 @@ struct CreaturesListView: View {
                         Text("\(creatures.creaturesArray.count) of \(creatures.count)")
                     }
                 }
-                
+                .searchable(text: $searchText)
                 if creatures.isLoading {
                     ProgressView()
                         .tint(.red)
@@ -54,6 +52,16 @@ struct CreaturesListView: View {
         }
         .task {
             await creatures.getData()
+        }
+    }
+    
+    var searchResults: [Creature] {
+        if searchText.isEmpty {
+            return creatures.creaturesArray
+        } else { // We have some searchText
+            return creatures.creaturesArray.filter {
+                $0.name.capitalized.contains(searchText)
+            }
         }
     }
 }
