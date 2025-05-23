@@ -19,7 +19,7 @@ struct CreaturesListView: View {
                         NavigationLink {
                             DetailView(creature: creature)
                         } label: {
-                            Text(creature.name.capitalized)
+                            Text("\(returnIndex(of: creature)). \(creature.name.capitalized)")
                                 .font(.title2)
                         }
                     }
@@ -63,6 +63,13 @@ struct CreaturesListView: View {
                 $0.name.capitalized.contains(searchText)
             }
         }
+    }
+    // See screenshot for alternative way of doing this by Prof G
+    func returnIndex(of creature: Creature) -> Int {
+        guard let index = creatures.creaturesArray.firstIndex(of: creature) else {
+            return 0
+        }
+        return index + 1
     }
 }
 

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-struct Creature: Codable, Identifiable {
+struct Creature: Codable, Identifiable, Equatable {
     let id = UUID().uuidString
     var name: String
     var url: String // url for detail on Pokemon
