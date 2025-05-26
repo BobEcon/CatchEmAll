@@ -32,7 +32,10 @@ class Creatures {
         }
         
         do {
-            let (data, _) = try await URLSession.shared.data(from: url)
+                        let configuration = URLSessionConfiguration.ephemeral
+                        let session = URLSession(configuration: configuration)
+                        let (data, _) = try await session.data(from: url)
+//            let (data, _) = try await URLSession.shared.data(from: url)
             
             // Try to decode JSON data into our data structures
             guard let returned = try? JSONDecoder().decode(Returned.self, from: data) else {
